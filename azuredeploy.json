@@ -9,6 +9,53 @@
     "webAppName": "[concat('DevOpsWebApp-', uniqueString(resourceGroup().id))]"
   },
   "resources": [
+      {
+        "type": "Microsoft.Insights/autoscalesettings",
+        "name": "[concat('DevOpsAutoScale-', uniqueString(resourceGroup().id))]",
+        "apiVersion": "2014-04-01",
+        "location": "[resourceGroup().location]",
+        "tags": {},
+        "scale": null,
+        "properties": {
+            "profiles": [
+                {
+                    "name": "Auto created scale condition",
+                    "capacity": {
+                        "minimum": "1",
+                        "maximum": "2",
+                        "default": "1"
+                    },
+                    "rules": [
+                        {
+                            "metricTrigger": {
+                                "metricName": "CpuPercentage",
+                                "metricNamespace": "",
+                                "metricResourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('appSvcPlanName'))]",
+                                "timeGrain": "PT1M",
+                                "statistic": "Average",
+                                "timeWindow": "PT5M",
+                                "timeAggregation": "Average",
+                                "operator": "GreaterThan",
+                                "threshold": 60
+                            },
+                            "scaleAction": {
+                                "direction": "Increase",
+                                "type": "ChangeCount",
+                                "value": "1",
+                                "cooldown": "PT5M"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "enabled": true,
+            "name": "[concat('DevOpsAutoScale-', uniqueString(resourceGroup().id))]",
+            "targetResourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('appSvcPlanName'))]"
+        },
+        "dependsOn": [
+            "[resourceId('Microsoft.Web/serverfarms', variables('appSvcPlanName'))]"
+        ]
+    },
     {
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2016-09-01",
