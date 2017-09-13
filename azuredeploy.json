@@ -37,7 +37,7 @@
         "type": "Microsoft.Web/sites/config",
         "name": "[concat(variables('webAppName'), '/', 'web')]",
         "apiVersion": "2016-08-01",
-        "location": "East US",
+        "location": "[resourceGroup().location]",
         "scale": null,
         "properties": {
             "alwaysOn": true
