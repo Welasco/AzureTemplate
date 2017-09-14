@@ -7,4 +7,17 @@
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-First Test
+This template will deploy a WebApp and a Application Service Plan.
+
+The Application Service Plan will have this size:
+VM Size: S1 
+Service Plan: Standard
+
+The WebApp will have a autoscale setup to:
+
+Default instance: 1
+Max instances: 2
+CPU load: 60%
+
+WebApp config:
+Always On: True
